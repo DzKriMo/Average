@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Semester Average Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: #fff;
+            background-image: linear-gradient(to right, #284b70, #333);
+            font-weight: bolder;
+            text-shadow: 3px 3px 2px rgb(0, 0, 0);
+            font-family: 'Bungee', cursive;
+        }
+
+        .container {
+            max-width: 95%;
+            padding: 16px;
+            background-color: #007bff46;
+            margin: 0 auto;
+            margin-top: 50px;
+            border-radius: 8px;
+        }
+
+        h2 {
+            color: #fff;
+            font-weight: bold;
+            font-size: 2em;
+        }
+
+        label {
+            color: #fff;
+            font-size: 1.2em;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border-radius: 4px;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="text-align: center;">Semester Average Calculator</h2>
+        <!-- Form to dynamically add subjects -->
+        <form id="subjectForm">
+            <div id="subjectInputs">
+                <!-- Initial subject input fields -->
+                <div class="subjectEntry">
+                    <label for="subjectName">Subject Name:</label><br>
+                    <input type="text" class="subjectName" placeholder="Enter subject name"><br>
+                    <label for="coefficients">Coefficients:</label><br>
+                    <input type="number" class="coefficients" min="0"><br>
+                    <label for="TD">TD:</label><br>
+                    <input type="number" class="TD" min="0" max="20"><br>
+                    <label for="EMD1">EMD1:</label><br>
+                    <input type="number" class="EMD1" min="0" max="20"><br>
+                    <label for="EMD2">EMD2:</label><br>
+                    <input type="number" class="EMD2" min="0" max="20"><br><br>
+                </div>
+            </div>
+            <button type="button" onclick="addSubject()">Add Another Subject</button>
+            <br><br>
+            <div class="center">
+                <button onclick="calculateAverage()">Calculate Average</button>
+            </div>
+        </form>
+
+        <!-- Result display -->
+        <p id="result"></p>
+        <br><br>
+    </div>
+
+    <script>
+        function addSubject() {
+            const subjectInputs = document.getElementById('subjectInputs');
+            const newSubject = document.createElement('div');
+            newSubject.className = 'subjectEntry';
+            newSubject.innerHTML = `
+                <label for="subjectName">Subject Name:</label><br>
+                <input type="text" class="subjectName" placeholder="Enter subject name"><br>
+                <label for="coefficients">Coefficients:</label><br>
+                <input type="number" class="coefficients" min="0"><br>
+                <label for="TD">TD:</label><br>
+                <input type="number" class="TD" min="0" max="20"><br>
+                <label for="EMD1">EMD1:</label><br>
+                <input type="number" class="EMD1" min="0" max="20"><br>
+                <label for="EMD2">EMD2:</label><br>
+                <input type="number" class="EMD2" min="0" max="20"><br><br>
+            `;
+            subjectInputs.appendChild(newSubject);
+        }
+
+        function calculateAverage() {
+            const subjects = document.getElementsByClassName('subjectEntry');
+            let totalCoefficient = 0;
+            let totalScore = 0;
+
+            for (let i = 0; i < subjects.length; i++) {
+                const coefficients = parseFloat(subjects[i].getElementsByClassName('coefficients')[0].value);
+                const TD = parseFloat(subjects[i].getElementsByClassName('TD')[0].value);
+                const EMD1 = parseFloat(subjects[i].getElementsByClassName('EMD1')[0].value);
+                const EMD2 = parseFloat(subjects[i].getElementsByClassName('EMD2')[0].value);
+
+                const subjectAverage = (TD + EMD1 + EMD2) / 3;
+                totalCoefficient += coefficients;
+                totalScore += subjectAverage * coefficients;
+            }
+
+            const semesterAverage = totalScore / totalCoefficient;
+            document.getElementById("result").innerHTML = "Semester Average: " + semesterAverage.toFixed(2);
+        }
+    </script>
+</body>
+</html>
